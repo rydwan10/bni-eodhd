@@ -3,6 +3,17 @@
 This project demonstrates how to use websockets to connect to a crypto exchange's API and display real-time price data in a chart.  
 This Project using Flutter 3.24.1, Dart 3.5.1 and DevTools version 2.37.2
 
+## ======================
+
+
+
+https://github.com/user-attachments/assets/81a4caa1-f262-47cc-abc7-f4dfedf5d77d
+
+
+
+https://github.com/user-attachments/assets/927e60d9-57a9-4a89-b699-803887d0365c
+
+
 
 ### Packages used
 
@@ -55,4 +66,3 @@ The project is organized into the following folders:
 * **main.dart** - The main entry point of the application.
 
 
-## Screen Record of the finished app

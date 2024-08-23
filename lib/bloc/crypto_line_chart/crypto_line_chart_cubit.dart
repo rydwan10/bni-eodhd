@@ -9,7 +9,6 @@ class CryptoLineChartCubit extends Cubit<CryptoLineChartState> {
   CryptoLineChartCubit() : super(CryptoLineChartInitial());
 
   void addData(CryptoSocket newData) {
-    print('hai');
     final currentState = state;
     if(currentState is CryptoLineChartInitial) {
       emit(CryptoLineChartLoaded(rawData: [newData], spotData: [FlSpot(0, newData.lastPrice / 8000)]));
@@ -24,24 +23,19 @@ class CryptoLineChartCubit extends Cubit<CryptoLineChartState> {
       final calculateX = ((newData.time - currentRawData.last.time)).abs() / 1200;
       final calculateX2 = (newData.lastPrice - newData.dailyDifferencePrice) / 8000;
 
-      final newSpotData = [...currentSpotData, FlSpot(calculateX, newData.lastPrice/ 8000)];
+      final newSpotData = [...currentSpotData, FlSpot(calculateX.ceilToDouble(), newData.lastPrice/ 8000)];
       final newRawData = [...currentRawData, newData];
 
       emit(CryptoLineChartLoaded(rawData: newRawData, spotData: newSpotData));
     }
   }
 
-  // double calculateX(SocketResponse socketResponse) {
-  //   // print(rawData);
-  //   if (rawData.isEmpty) return 0.0;
-  //   final lastData = rawData.last;
-  //   if (lastData.time == 0) return 0;
-  //   // if(lastData.time == 0) return 1;
-  //   // print('rydwan');
-  //   // print(socketResponse.time);
-  //   // print(lastData.time);
-  //   final calculate = ((socketResponse.time - lastData.time)).abs() / 1200;
-  //   // print(data);
-  //   return calculate.toDouble();
-  // }
+  void simulateWithDummyData() {
+    final dummyFlSpots = [
+      FlSpot(0, 3),
+      FlSpot(2.6, 2),
+      FlSpot(4.9, 5),
+    ];
+    emit(CryptoLineChartLoaded(spotData: dummyFlSpots, rawData: []));
+  }
 }

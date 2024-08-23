@@ -42,7 +42,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
         centerTitle: true,
         title: const Text(
           'Crypto Live Data',
-          style: TextStyle(fontWeight: FontWeight.w600),
+          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 22),
         ),
         backgroundColor: const Color(0xFFe9eeee),
       ),
@@ -103,7 +103,7 @@ class _CryptoScreenState extends State<CryptoScreen> {
               ],
             );
           }
-          return Center(
+          return const Center(
             child: Text(
               'Loading...',
               style: TextStyle(fontWeight: FontWeight.w600),

@@ -1,6 +1,8 @@
 import 'package:bni_eodhd/bloc/crypto_line_chart/crypto_line_chart_cubit.dart';
+import 'package:bni_eodhd/constant/constant.dart';
 import 'package:bni_eodhd/data/data/socket_response.dart';
 import 'package:bni_eodhd/data/repository/socket_crypto_repository.dart';
+import 'package:bni_eodhd/feature/shared/card_coin.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,8 +35,14 @@ class _LineChartSample2State extends State<LineChartCrypto> {
 
   @override
   void initState() {
-    subscribe();
     super.initState();
+    subscribe();
+  }
+
+  @override
+  void dispose() {
+    widget.cryptoRepository.disconnect();
+    super.dispose();
   }
 
   List<Color> gradientColors = [
@@ -49,49 +57,111 @@ class _LineChartSample2State extends State<LineChartCrypto> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Line Chart of ${widget.data.tickerCode}'),
+        title: Text(
+          'Line Chart of ${widget.data.tickerCode}',
+          style: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 22,
+          ),
+        ),
+        backgroundColor: const Color(0xFFe9eeee),
       ),
       body: BlocBuilder<CryptoLineChartCubit, CryptoLineChartState>(
         builder: (context, state) {
-          if(state is CryptoLineChartLoaded) {
-            return Stack(
-              children: <Widget>[
-                AspectRatio(
-                  aspectRatio: 1.70,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 18,
-                      left: 12,
-                      top: 24,
-                      bottom: 12,
-                    ),
-                    child: LineChart(
-                      mainData(state.spotData),
-                    ),
+          if (state is CryptoLineChartLoaded) {
+            return Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 12),
+                  padding: const EdgeInsets.all(12),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 48,
+                            child: Image.network(
+                                widget.data.tickerCode == BTC_USD
+                                    ? BTC_ICON_LINK
+                                    : ETH_ICON_LINK),
+                          ),
+                          const SizedBox(width: 12),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                widget.data.tickerCode == BTC_USD
+                                    ? 'Bitcoin'
+                                    : 'Ethereum',
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Text(
+                                widget.data.tickerCode,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color(0xFF686161),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      )
+                    ],
                   ),
                 ),
-                SizedBox(
-                  width: 60,
-                  height: 34,
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        showAvg = !showAvg;
-                      });
-                    },
-                    child: Text(
-                      'avg',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: showAvg ? Colors.white.withOpacity(0.5) : Colors
-                            .white,
+                Stack(
+                  children: <Widget>[
+                    AspectRatio(
+                      aspectRatio: 1.70,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          right: 18,
+                          left: 12,
+                          top: 24,
+                          bottom: 12,
+                        ),
+                        child: LineChart(
+                          mainData(state.spotData),
+                        ),
                       ),
                     ),
-                  ),
+                    SizedBox(
+                      width: 60,
+                      height: 34,
+                      child: TextButton(
+                        onPressed: () {
+                          setState(() {
+                            showAvg = !showAvg;
+                          });
+                        },
+                        child: Text(
+                          'avg',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: showAvg
+                                ? Colors.white.withOpacity(0.5)
+                                : Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    widget.cryptoRepository.disconnect();
+                    context
+                        .read<CryptoLineChartCubit>()
+                        .simulateWithDummyData();
+                  },
+                  child: Text('Simulate with dummy data'),
                 ),
               ],
             );
-
           }
           return Center(child: Text('Loading...'));
         },

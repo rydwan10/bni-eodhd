@@ -4,10 +4,14 @@ This project demonstrates how to use websockets to connect to a crypto exchange'
 This Project using Flutter 3.24.1, Dart 3.5.1 and DevTools version 2.37.2
 
 
-| https://github.com/user-attachments/assets/81a4caa1-f262-47cc-abc7-f4dfedf5d77d  |  https://github.com/user-attachments/assets/927e60d9-57a9-4a89-b699-803887d0365c |
-|---|---|
+## Android
+https://github.com/user-attachments/assets/886f4c13-70f0-453c-b921-bc4eb41bb611
 
 
+
+
+## iOS
+https://github.com/user-attachments/assets/05e9ade4-9cbc-4a3f-87a8-f7a1eabb08a7
 
 
 ### Packages used
